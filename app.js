@@ -15,9 +15,11 @@ const { createServer } = require("http");
 const { Server } = require("socket.io");
 const Message = require("./models/convertionSchema")
 const server = createServer(app); // Attach Express to HTTP server
+
+
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000", // Allow frontend to connect
+    origin: ["http://localhost:3000", "https://student-connect-client.vercel.app/"], // Allow frontend to connect
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
     credentials: true
@@ -32,14 +34,15 @@ app.use(bodyParser.urlencoded({ extended: true })); // Parses URL-encoded data
 // Serve static files from the React build folder
 
 app.use(express.static(path.join(__dirname, '../client/build')));
-// Middleware to parse JSON data from request body
 
+// Middleware to parse JSON data from request body
 app.use(express.json());
 
 // app.use(express.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
+
   // res.set('Access-Control-Allow-Origin', 'http://localhost:3000');
   res.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   res.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin,Email');
@@ -47,9 +50,11 @@ app.use((req, res, next) => {
   // res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
   // res.setHeader("Cross-Origin-Embedder-Policy", "credentialless");
   next() // passing to next middleware
+
 })
 
 const corsOptions = {
+
   origin: (origin, callback) => {
     const allowedOrigins = ["https://student-connect-client.vercel.app", "http://localhost:3000", "https://6c84-2401-4900-6301-54aa-50e9-d125-d12a-da82.ngrok-free.app", "http://192.168.1.4:3000", "http://192.168.25.45:5000", "https://tiny-toffee-e5ee83.netlify.app", "http://192.168.1.6:3000", "student-connect-client-bdvwfgaun-karthiksankarfds-projects.vercel.app", "http://192.168.45.45:5000/api"]; // frontend origin
     if (!origin || allowedOrigins.includes(origin)) {
@@ -61,6 +66,7 @@ const corsOptions = {
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true, // Allow cookies if needed
   allowedHeaders: "Content-Type, Authorization, X-Requested-With, Accept, Origin,Email"
+
 };
 
 app.use(cors(corsOptions))
@@ -105,6 +111,7 @@ io.on("connection", (socket) => {
         await convo.save(); // Save updated messages
       }
     }
+
   });
 
 
