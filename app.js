@@ -128,11 +128,11 @@ io.on("connection", (socket) => {
     if (!conversation) {
       conversation = new Message({
         conversationBetween: [message.senderId, message.receiverId],
-        messages: [{ text: message.message, senderId: message.senderId, receiverId: message.receiverId, delivered: onlineUsers[message.receiverId] ? true : false }],
+        messages: [{ text: message.text, senderId: message.senderId, receiverId: message.receiverId, delivered: onlineUsers[message.receiverId] ? true : false }],
       });
     } else {
-      conversation.messages.push({ text: message.message, senderId: message.senderId, receiverId: message.receiverId, delivered: onlineUsers[message.receiverId] ? true : false });
-    }
+      conversation.messages.push({ text: message.text, senderId: message.senderId, receiverId: message.receiverId, delivered: onlineUsers[message.receiverId] ? true : false });
+    } 
     await conversation.save(); // ✅ Use 'await' to ensure it's saved properly
     // Handle sending a message
     // socket.on("sendMessage", async ({ senderId, receiverId, message }) => {
